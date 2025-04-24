@@ -65,7 +65,7 @@
 
         <div class="show-password">
             <input type="checkbox" id="showPassword">
-            <label for="showPassword">Tampilkan Password</label>
+            <label for="showPassword">Show Password</label>
         </div>
 
         <button type="submit">Login</button>
