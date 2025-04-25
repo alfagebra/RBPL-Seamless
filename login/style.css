@@ -17,7 +17,7 @@ body {
 
 .left-panel {
   flex: 1;
-  background: url('image/img-login.png') no-repeat top center/cover;
+  background: url('images/img-login.png') no-repeat top center/cover;
   color: white;
   display: flex;
   align-items: flex-start;  
