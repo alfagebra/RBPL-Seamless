@@ -37,7 +37,7 @@
 <body>
   <div class="container">
     <div class="left-panel">
-      <img src="../image/img_login.png" alt="Login illustration">
+      <img src="../images/img_login.png" alt="Login illustration">
     </div>
     <div class="right-panel">
       <h1 class="login-title">Login!</h1>
