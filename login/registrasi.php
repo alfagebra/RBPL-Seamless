@@ -1,13 +1,9 @@
-<?php
-session_start();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
+  <title>Register</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -22,7 +18,7 @@ session_start();
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     .container {
@@ -33,6 +29,7 @@ session_start();
       width: 90%;
       max-width: 900px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      height: 505px; /* sama seperti login */
     }
 
     .left-panel {
@@ -41,7 +38,6 @@ session_start();
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0;
       overflow: hidden;
     }
 
@@ -57,7 +53,8 @@ session_start();
       padding: 40px 30px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
+      overflow-y: auto;
     }
 
     .login-title {
@@ -79,6 +76,7 @@ session_start();
     }
 
     input[type="text"],
+    input[type="email"],
     input[type="password"] {
       padding: 10px;
       border: 1px solid #ccc;
@@ -146,13 +144,25 @@ session_start();
       background-color: #5e0f0f;
     }
 
-    .input-error {
-    border: 2px solid red !important;
+    .login-link {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: #3B0000;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
     }
 
     @media screen and (max-width: 768px) {
       .container {
         flex-direction: column;
+        height: auto;
       }
 
       .left-panel {
@@ -168,12 +178,21 @@ session_start();
 <body>
   <div class="container">
     <div class="left-panel">
-      <img src="../image/img_login.png" alt="Login illustration">
+      <img src="../image/img_login.png" alt="Register illustration">
     </div>
     <div class="right-panel">
-      <h1 class="login-title">Login!</h1>
-      <form action="login_proses.php" method="POST">
-        <label for="role">Login as</label>
+      <h1 class="login-title">Register</h1>
+      <form action="register_proses.php" method="POST">
+        <label for="name">Full Name</label>
+        <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+
+        <label for="company">Company</label>
+        <input type="text" name="company" id="company" placeholder="Enter your company name" required>
+
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="Enter your email address" required>
+
+        <label for="role">Register as</label>
         <div class="custom-dropdown">
           <div class="selected">Select Position</div>
           <div class="options">
@@ -198,64 +217,47 @@ session_start();
           <label for="showPassword">Show Password</label>
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
+
+        <div class="login-link">
+          Already have an account? <a href="login.php">Login here</a>
+        </div>
       </form>
     </div>
   </div>
 
- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const selected = document.querySelector('.selected');
-    const optionsContainer = document.querySelector('.options');
-    const optionsList = document.querySelectorAll('.option');
-    const hiddenInput = document.getElementById('role');
-    const form = document.getElementById('formLogin');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const selected = document.querySelector('.selected');
+      const optionsContainer = document.querySelector('.options');
+      const optionsList = document.querySelectorAll('.option');
+      const hiddenInput = document.getElementById('role');
 
-    // Dropdown logic
-    selected.addEventListener('click', () => {
-      optionsContainer.classList.toggle('active');
-    });
+      selected.addEventListener('click', () => {
+        optionsContainer.classList.toggle('active');
+      });
 
-    optionsList.forEach(option => {
-      option.addEventListener('click', () => {
-        selected.innerText = option.innerText;
-        hiddenInput.value = option.innerText;
-        optionsContainer.classList.remove('active');
-        selected.classList.remove('input-error');
+      optionsList.forEach(option => {
+        option.addEventListener('click', () => {
+          selected.innerText = option.innerText;
+          hiddenInput.value = option.innerText;
+          optionsContainer.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown')) {
+          optionsContainer.classList.remove('active');
+        }
+      });
+
+      const passwordField = document.getElementById('password');
+      const showCheckbox = document.getElementById('showPassword');
+
+      showCheckbox.addEventListener('change', function () {
+        passwordField.type = this.checked ? 'text' : 'password';
       });
     });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.custom-dropdown')) {
-        optionsContainer.classList.remove('active');
-      }
-    });
-
-    // Show Password toggle
-    const passwordField = document.getElementById('password');
-    const showCheckbox = document.getElementById('showPassword');
-
-    showCheckbox.addEventListener('change', function () {
-      passwordField.type = this.checked ? 'text' : 'password';
-    });
-
-    // Form validation
-    form.addEventListener('submit', function (e) {
-      if (!hiddenInput.value) {
-        e.preventDefault();
-        selected.classList.add('input-error');
-        alert("Please select a position before logging in.");
-      }
-    });
-
-    // Optional: tampilkan error dari PHP session
-    <?php if (isset($_SESSION['login_error'])): ?>
-      alert("<?= $_SESSION['login_error'] ?>");
-      <?php unset($_SESSION['login_error']); ?>
-    <?php endif; ?>
-  });
-</script>
-
-
+  </script>
 </body>
 </html>
